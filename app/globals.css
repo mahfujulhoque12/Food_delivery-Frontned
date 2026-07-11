@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand / Culinary Theme Colors */
+  --color-brand-primary: #ea580c; /* Terracotta Orange (Core branding) */
+  --color-brand-hover: #c2410c; /* Darker terracotta for active states */
+  --color-brand-light: #fff7ed; /* Soft peach cream for backgrounds & alerts */
+  --color-brand-accent: #f97316; /* Bright accent orange */
+
+  /* Neutral Backgrounds & Card Grays */
+  --color-bg-main: #fafaf9; /* Warm Stone 50 (App background) */
+  --color-bg-card: #ffffff; /* Pure white for containers */
+  --color-border-soft: #f5f5f4; /* Subtle stone dividers */
+  --color-border-focus: #fed7aa; /* Soft orange ring for inputs */
+
+  /* Text Typography Colors */
+  --color-text-dark: #292524; /* Stone 800 (Headings) */
+  --color-text-muted: #78716c; /* Stone 500 (Body text & labels) */
+  --color-text-light: #a8a29e; /* Stone 400 (Placeholders) */
+
+  /* Interactive Elements (Buttons & States) */
+  --color-btn-dark: #1c1917; /* Deep obsidian stone (Primary CTA button) */
+  --color-btn-dark-hover: #0c0a09; /* Darker background for hover */
+
+  /* System States */
+  --color-success: #10b981; /* Emerald green for delivery tracker/success */
+  --color-error: #f43f5e; /* Rose pink for validation errors */
+}
