@@ -17,7 +17,7 @@ import {
 } from "react-icons/fi";
 import { toast } from "sonner";
 
-type UserRole = "user" | "owner" | "deliveryBoy";
+export type UserRole = "user" | "owner" | "deliveryBoy";
 
 interface SignUpFormInput {
   full_name: string;
@@ -97,9 +97,9 @@ const SignUp: React.FC = () => {
             </label>
             <div className="grid grid-cols-3 gap-2.5">
               {[
-                { id: "user", label: "Customer", icon: FiShoppingBag },
-                { id: "owner", label: "Merchant", icon: FiCoffee },
-                { id: "deliveryBoy", label: "Rider", icon: FiTruck },
+                { id: "user", label: "User", icon: FiShoppingBag },
+                { id: "owner", label: "Owner", icon: FiCoffee },
+                { id: "deliveryBoy", label: "Delivery Boy", icon: FiTruck },
               ].map((item) => {
                 const Icon = item.icon;
                 const isSelected = currentRole === item.id;

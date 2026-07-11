@@ -1,10 +1,21 @@
 "use client";
+
 import { useAuthStore } from "@/store/authStore";
-import Image from "next/image";
+import ProtectedRoute from "@/components/provider/ProtectedRoute";
+import UserDashboard from "@/components/dashboard/UserDashboard";
+import OwnerDashboard from "@/components/dashboard/OwnerDashboard";
+import DeliveryBoyDashboard from "@/components/dashboard/DeliveryBoyDashboard";
 
 export default function Home() {
   const { token, user } = useAuthStore();
-  console.log(token, "token");
   console.log(user, "user");
-  return <div>h1 </div>;
+  console.log(token, "token");
+
+  return (
+    <ProtectedRoute>
+      {user?.role === "user" && <UserDashboard />}
+      {user?.role === "owner" && <OwnerDashboard />}
+      {user?.role === "deliveryBoy" && <DeliveryBoyDashboard />}
+    </ProtectedRoute>
+  );
 }
