@@ -26,3 +26,7 @@
   --color-success: #10b981; /* Emerald green for delivery tracker/success */
   --color-error: #f43f5e; /* Rose pink for validation errors */
 }
+
+.wrapper {
+  @apply mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8;
+}
