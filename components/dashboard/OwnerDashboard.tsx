@@ -1,7 +1,12 @@
 import React from "react";
+import Navbar from "../user-page/Navbar";
 
 const OwnerDashboard = () => {
-  return <div>OwnerDashboard</div>;
+  return (
+    <div>
+      <Navbar />
+    </div>
+  );
 };
 
 export default OwnerDashboard;

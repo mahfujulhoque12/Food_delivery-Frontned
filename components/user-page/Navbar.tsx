@@ -4,7 +4,13 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { HiOutlineLocationMarker, HiOutlineShoppingCart } from "react-icons/hi";
 import { IoSearchOutline } from "react-icons/io5";
-import { FiPackage, FiSettings, FiLogOut, FiChevronDown } from "react-icons/fi";
+import {
+  FiPackage,
+  FiSettings,
+  FiLogOut,
+  FiChevronDown,
+  FiPlus,
+} from "react-icons/fi";
 
 import { useAuthStore } from "@/store/authStore";
 import useCurrentCity from "@/hooks/useCurrentCity";
@@ -54,65 +60,106 @@ const Navbar = () => {
         </Link>
 
         {/* ================= LOCATION + SEARCH ================= */}
-        <div className="hidden flex-1 items-center gap-4 lg:flex">
-          {/* Location */}
-          <button className="flex h-14 min-w-[220px] items-center gap-3 rounded-2xl border border-border-soft bg-bg-main px-5 transition-all duration-300 hover:border-brand-primary">
-            <HiOutlineLocationMarker size={24} className="text-brand-primary" />
+        {user?.role === "user" && (
+          <div className="hidden flex-1 items-center gap-4 lg:flex">
+            {/* Location */}
+            <button className="flex h-14 min-w-[220px] items-center gap-3 rounded-2xl border border-border-soft bg-bg-main px-5 transition-all duration-300 hover:border-brand-primary">
+              <HiOutlineLocationMarker
+                size={24}
+                className="text-brand-primary"
+              />
 
-            <div className="text-left">
-              <p className="text-xs text-text-light">Deliver To</p>
+              <div className="text-left">
+                <p className="text-xs text-text-light">Deliver To</p>
 
-              <h4 className="font-semibold text-text-dark">
-                {" "}
-                {loading ? "Loading..." : city}
-              </h4>
+                <h4 className="font-semibold text-text-dark">
+                  {" "}
+                  {loading ? "Loading..." : city}
+                </h4>
+              </div>
+            </button>
+
+            {/* Search */}
+
+            <div className="relative flex-1 hidden lg:flex">
+              <IoSearchOutline
+                size={22}
+                className="absolute left-5 top-1/2 -translate-y-1/2 text-text-light"
+              />
+
+              <input
+                type="text"
+                placeholder="Search food, restaurants..."
+                className="h-14 w-full rounded-2xl border border-border-soft bg-bg-main pl-14 pr-5 text-text-dark outline-none transition-all duration-300 focus:border-brand-primary"
+              />
             </div>
-          </button>
-
-          {/* Search */}
-          <div className="relative flex-1 hidden lg:flex">
-            <IoSearchOutline
-              size={22}
-              className="absolute left-5 top-1/2 -translate-y-1/2 text-text-light"
-            />
-
-            <input
-              type="text"
-              placeholder="Search food, restaurants..."
-              className="h-14 w-full rounded-2xl border border-border-soft bg-bg-main pl-14 pr-5 text-text-dark outline-none transition-all duration-300 focus:border-brand-primary"
-            />
           </div>
-        </div>
+        )}
 
         {/* ================= RIGHT ================= */}
         <div className="flex items-center gap-3">
           {/* Mobile Search */}
-          <button
-            onClick={() => setShowSearch(!showSearch)}
-            className="flex h-12 w-12 items-center justify-center rounded-xl border border-border-soft bg-bg-main transition-all duration-300 hover:border-brand-primary lg:hidden"
-          >
-            <IoSearchOutline size={22} />
-          </button>
-          {/* Cart */}
-          <Link
-            href="/cart"
-            className="relative flex h-12 w-12 items-center justify-center rounded-xl border border-border-soft bg-bg-main transition-all duration-300 hover:bg-brand-primary hover:text-white"
-          >
-            <HiOutlineShoppingCart size={22} />
+          {user?.role === "user" && (
+            <>
+              <button
+                onClick={() => setShowSearch(!showSearch)}
+                className="flex h-12 w-12 items-center justify-center rounded-xl border border-border-soft bg-bg-main transition-all duration-300 hover:border-brand-primary lg:hidden"
+              >
+                <IoSearchOutline size={22} />
+              </button>
 
-            <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-brand-primary text-[10px] font-semibold text-white">
-              2
-            </span>
-          </Link>
+              {/* Cart */}
+              <Link
+                href="/cart"
+                className="relative flex h-12 w-12 items-center justify-center rounded-xl border border-border-soft bg-bg-main transition-all duration-300 hover:bg-brand-primary hover:text-white"
+              >
+                <HiOutlineShoppingCart size={22} />
 
-          {/* Orders */}
-          <Link
-            href="/orders"
-            className="hidden h-12 items-center gap-2 rounded-xl bg-btn-dark px-5 font-medium text-btn-light transition-all duration-300 hover:opacity-90 md:flex text-white"
-          >
-            <FiPackage size={18} />
-            My Orders
-          </Link>
+                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-brand-primary text-[10px] font-semibold text-white">
+                  2
+                </span>
+              </Link>
+            </>
+          )}
+
+          {/* add item start */}
+          {user?.role === "owner" ? (
+            <>
+              <button
+                title="Add Item"
+                className="inline-flex items-center gap-2 rounded-xl bg-brand-primary px-5 py-3.5 text-sm font-semibold  shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:opacity-90 active:scale-95 text-white cursor-pointer"
+              >
+                <FiPlus size={18} />
+                <span className="hidden sm:flex"> Add Item</span>
+              </button>
+              <Link
+                href="/orders"
+                title="My Orders"
+                className="flex h-12 items-center gap-2 rounded-xl bg-btn-dark px-5 text-sm font-medium text-white shadow-sm transition-all duration-300 hover:bg-btn-dark-hover hover:shadow-md active:scale-95"
+              >
+                <FiPackage className="shrink-0" size={18} />
+
+                <span className="hidden sm:block">My Orders</span>
+
+                <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-brand-primary px-2 text-xs font-semibold text-white">
+                  01
+                </span>
+              </Link>
+            </>
+          ) : (
+            <>
+              {/* Orders */}
+              <Link
+                title="My Orders"
+                href="/orders"
+                className=" h-12 items-center gap-2 rounded-xl bg-btn-dark px-5 font-medium text-btn-light transition-all duration-300 hover:opacity-90 flex text-white"
+              >
+                <FiPackage size={18} />
+                <span className="hidden sm:flex">My Orders</span>
+              </Link>
+            </>
+          )}
+          {/* add item end */}
 
           {/* User Dropdown */}
           <div className="relative" ref={dropdownRef}>
@@ -169,26 +216,28 @@ const Navbar = () => {
         </div>
       </div>
       {/* ================= MOBILE SEARCH ================= */}
-      <div
-        className={`overflow-hidden border-t border-border-soft bg-bg-card transition-all duration-300 lg:hidden ${
-          showSearch ? "max-h-24 py-4 opacity-100" : "max-h-0 py-0 opacity-0"
-        }`}
-      >
-        <div className="wrapper">
-          <div className="relative">
-            <IoSearchOutline
-              size={22}
-              className="absolute left-5 top-1/2 -translate-y-1/2 text-text-light"
-            />
+      {user?.role === "user" && (
+        <div
+          className={`overflow-hidden border-t border-border-soft bg-bg-card transition-all duration-300 lg:hidden ${
+            showSearch ? "max-h-24 py-4 opacity-100" : "max-h-0 py-0 opacity-0"
+          }`}
+        >
+          <div className="wrapper">
+            <div className="relative">
+              <IoSearchOutline
+                size={22}
+                className="absolute left-5 top-1/2 -translate-y-1/2 text-text-light"
+              />
 
-            <input
-              type="text"
-              placeholder="Search food, restaurants..."
-              className="h-12 w-full rounded-2xl border border-border-soft bg-bg-main pl-14 pr-4 outline-none transition-all duration-300 focus:border-brand-primary"
-            />
+              <input
+                type="text"
+                placeholder="Search food, restaurants..."
+                className="h-12 w-full rounded-2xl border border-border-soft bg-bg-main pl-14 pr-4 outline-none transition-all duration-300 focus:border-brand-primary"
+              />
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </header>
   );
 };
