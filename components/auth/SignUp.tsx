@@ -49,8 +49,9 @@ const SignUp: React.FC = () => {
     },
   });
 
-  const { mutateAsync, isPending } =
-    usePostMutation<SignUpFormInput>("/api/auth/signup");
+  const { mutateAsync, isPending } = usePostMutation<SignUpFormInput>({
+    url: "/api/auth/signup",
+  });
   const currentRole = watch("role");
 
   const onSubmit: SubmitHandler<SignUpFormInput> = async (data) => {
