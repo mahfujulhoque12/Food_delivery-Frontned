@@ -37,7 +37,7 @@ const useCurrentCity = () => {
           const city =
             address.city || address.town || address.village || address.state;
 
-          setCity(area ? `${area}, ${city}` : city || "Unknown");
+          setCity(city || "Unknown");
         } catch (error) {
           console.error(error);
           setCity("Unknown");

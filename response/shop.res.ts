@@ -5,6 +5,10 @@ export interface IFoodItem {
   name: string;
   image: string;
   shop: string;
+  rating: {
+    average: number;
+    count: number;
+  };
   category:
     | "Burger"
     | "Pizza"

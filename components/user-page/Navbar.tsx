@@ -14,8 +14,11 @@ import {
 
 import { useAuthStore } from "@/store/authStore";
 import useCurrentCity from "@/hooks/useCurrentCity";
+import { useCartStore } from "@/store/useCartStore";
 
 const Navbar = () => {
+  const { cart } = useCartStore();
+
   const { user, logout } = useAuthStore();
   const [showSearch, setShowSearch] = useState(false);
   const { city, loading } = useCurrentCity();
@@ -115,9 +118,11 @@ const Navbar = () => {
               >
                 <HiOutlineShoppingCart size={22} />
 
-                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-brand-primary text-[10px] font-semibold text-white">
-                  2
-                </span>
+                {cart.length > 0 && (
+                  <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-brand-primary text-[10px] font-semibold text-white">
+                    {cart.length}
+                  </span>
+                )}
               </Link>
             </>
           )}
@@ -125,13 +130,14 @@ const Navbar = () => {
           {/* add item start */}
           {user?.role === "owner" ? (
             <>
-              <button
+              <Link
+                href={"/add-item"}
                 title="Add Item"
                 className="inline-flex items-center gap-2 rounded-xl bg-brand-primary px-5 py-3.5 text-sm font-semibold  shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:opacity-90 active:scale-95 text-white cursor-pointer"
               >
                 <FiPlus size={18} />
                 <span className="hidden sm:flex"> Add Item</span>
-              </button>
+              </Link>
               <Link
                 href="/orders"
                 title="My Orders"

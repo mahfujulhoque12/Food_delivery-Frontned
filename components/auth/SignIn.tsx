@@ -25,8 +25,9 @@ const SignIn: React.FC = () => {
     defaultValues: {},
   });
 
-  const { mutateAsync, isPending } =
-    usePostMutation<LoginResponse>("/api/auth/signin");
+  const { mutateAsync, isPending } = usePostMutation<LoginResponse>({
+    url: "/api/auth/signin",
+  });
 
   const onSubmit = async (data: SignInFormInput) => {
     try {

@@ -30,3 +30,30 @@
 .wrapper {
   @apply mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8;
 }
+
+.head-1 {
+  @apply text-3xl  font-extrabold text-text-dark tracking-tight;
+}
+.head-2 {
+  @apply text-2xl font-bold text-text-dark;
+}
+
+.title {
+  @apply text-brand-primary text-xs font-bold uppercase tracking-widest bg-brand-light px-3 py-1.5 rounded-full border border-border-focus/40;
+}
+
+.para-1 {
+  @apply text-lg font-semibold text-text-dark mt-4;
+}
+
+.para-2 {
+  @apply mt-3 max-w-lg text-text-light;
+}
+
+.para-3 {
+  @apply mt-3 flex items-center gap-2 text-text-muted;
+}
+
+.para-4 {
+  @apply text-xs text-text-light mt-1 flex items-center gap-1;
+}
