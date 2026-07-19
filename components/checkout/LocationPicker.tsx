@@ -31,13 +31,13 @@ function ChangeView({ center }: { center: Position }) {
 
 export default function LocationPicker() {
   const [search, setSearch] = useState("");
+  console.log(search, "serch---");
   const [position, setPosition] = useState<Position>({
     lat: 23.8103,
     lng: 90.4125,
   });
-  const [suggestions, setSuggestions] = useState<any[]>([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
 
+  console.log("position", position);
   const [loading, setLoading] = useState(false);
 
   const searchLocation = async () => {
@@ -71,38 +71,6 @@ export default function LocationPicker() {
     }
   };
 
-  const fetchSuggestions = async (value: string) => {
-    if (value.length < 3) {
-      setSuggestions([]);
-      return;
-    }
-
-    try {
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=jsonv2&q=${encodeURIComponent(
-          value,
-        )}&limit=5`,
-      );
-
-      const data = await res.json();
-
-      setSuggestions(data);
-      setShowSuggestions(true);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchSuggestions(search);
-      setSuggestions([]);
-      setShowSuggestions(false);
-    }, 200);
-
-    return () => clearTimeout(timer);
-  }, [search]);
-
   const reverseGeocode = async (lat: number, lng: number) => {
     try {
       const res = await fetch(
@@ -127,8 +95,6 @@ export default function LocationPicker() {
         .join(", ");
 
       setSearch(fullAddress);
-      setSuggestions([]);
-      setShowSuggestions(false);
     } catch (error) {
       console.error(error);
     }
@@ -154,8 +120,6 @@ export default function LocationPicker() {
         await reverseGeocode(newPosition.lat, newPosition.lng);
 
         setLoading(false);
-        setSuggestions([]);
-        setShowSuggestions(false);
       },
       (error) => {
         console.error(error);
@@ -182,30 +146,6 @@ export default function LocationPicker() {
           placeholder="Search your delivery area..."
           className="flex-1 rounded-xl border border-border-soft bg-bg-card px-4 py-3 text-text-dark outline-none transition focus:border-brand-primary"
         />
-        {showSuggestions && suggestions.length > 0 && (
-          <div className="absolute left-0 top-14 z-[999] w-full overflow-hidden rounded-xl border border-border-soft bg-white shadow-xl">
-            {suggestions.map((item) => (
-              <button
-                key={item.place_id}
-                type="button"
-                onClick={() => {
-                  setSearch(item.display_name);
-
-                  setPosition({
-                    lat: Number(item.lat),
-                    lng: Number(item.lon),
-                  });
-
-                  setSuggestions([]);
-                  setShowSuggestions(false);
-                }}
-                className="w-full border-b border-border-soft px-4 py-3 text-left text-sm hover:bg-gray-100"
-              >
-                {item.display_name}
-              </button>
-            ))}
-          </div>
-        )}
 
         <button
           onClick={searchLocation}

@@ -3,11 +3,19 @@
 import { FaCreditCard, FaMoneyBillWave } from "react-icons/fa6";
 import { useState } from "react";
 import { useCartStore } from "@/store/useCartStore";
+import { usePostMutation } from "@/hooks/usePostMutation";
+import { toast } from "sonner";
 
+type DeliveryAddress = {
+  text: string;
+  latitude: number;
+  longitude: number;
+};
 const PlaceOrder = () => {
   const [paymentMethod, setPaymentMethod] = useState<"cod" | "online">("cod");
 
   const cart = useCartStore((state) => state.cart);
+  const { clearCart } = useCartStore();
 
   const subtotal = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -19,7 +27,43 @@ const PlaceOrder = () => {
   const deliveryFee = subtotal > 0 ? 3 : 0;
   const tax = subtotal * 0.05;
 
-  const total = subtotal + deliveryFee + tax;
+  const totalAmount = subtotal + deliveryFee + tax;
+
+  const { mutateAsync, isPending } = usePostMutation({
+    url: "/api/item/place-order",
+    invalidateQuery: ["shop"],
+  });
+
+  const handlePlaceOrder = async () => {
+    try {
+      const payload = {
+        paymentMethod,
+        totalAmount,
+        deliveryAddress: {
+          text: "Dhaka, Banasree",
+          latitude: 23.763,
+          longitude: 90.431,
+        },
+        cartItems: cart.map((item) => ({
+          _id: item._id,
+          name: item.name,
+          price: item.price,
+          qty: item.quantity,
+          shop: item.shopId,
+        })),
+      };
+
+      const res = await mutateAsync(payload);
+
+      console.log(res);
+
+      toast.success("Order placed successfully");
+      clearCart();
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Failed to  place order.");
+    }
+  };
 
   return (
     <div className="grid mt-5 grid-cols-1 gap-6 lg:grid-cols-3">
@@ -155,12 +199,15 @@ const PlaceOrder = () => {
                 <span className="text-lg font-bold text-text-dark">Total</span>
 
                 <span className="text-3xl font-extrabold text-brand-primary">
-                  ${total.toFixed(2)}
+                  ${totalAmount.toFixed(2)}
                 </span>
               </div>
             </div>
 
-            <button className="w-full rounded-xl bg-brand-primary py-2 cursor-pointer text-lg font-semibold text-white transition hover:opacity-90">
+            <button
+              onClick={() => handlePlaceOrder()}
+              className="w-full rounded-xl bg-brand-primary py-2 cursor-pointer text-lg font-semibold text-white transition hover:opacity-90"
+            >
               Place Order
             </button>
           </div>
