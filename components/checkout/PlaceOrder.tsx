@@ -5,13 +5,13 @@ import { useState } from "react";
 import { useCartStore } from "@/store/useCartStore";
 import { usePostMutation } from "@/hooks/usePostMutation";
 import { toast } from "sonner";
+import { useLocationStore } from "@/store/useLocationStore";
+import { useRouter } from "next/navigation";
 
-type DeliveryAddress = {
-  text: string;
-  latitude: number;
-  longitude: number;
-};
 const PlaceOrder = () => {
+  const position = useLocationStore((state) => state.position);
+  const address = useLocationStore((state) => state.address);
+  const router = useRouter();
   const [paymentMethod, setPaymentMethod] = useState<"cod" | "online">("cod");
 
   const cart = useCartStore((state) => state.cart);
@@ -31,7 +31,7 @@ const PlaceOrder = () => {
 
   const { mutateAsync, isPending } = usePostMutation({
     url: "/api/item/place-order",
-    invalidateQuery: ["shop"],
+    invalidateQuery: ["get-orders"],
   });
 
   const handlePlaceOrder = async () => {
@@ -40,9 +40,9 @@ const PlaceOrder = () => {
         paymentMethod,
         totalAmount,
         deliveryAddress: {
-          text: "Dhaka, Banasree",
-          latitude: 23.763,
-          longitude: 90.431,
+          text: address,
+          latitude: position?.lat,
+          longitude: position?.lng,
         },
         cartItems: cart.map((item) => ({
           _id: item._id,
@@ -54,11 +54,10 @@ const PlaceOrder = () => {
       };
 
       const res = await mutateAsync(payload);
-
       console.log(res);
-
       toast.success("Order placed successfully");
       clearCart();
+      router.push("/placed-order");
     } catch (error: any) {
       console.log(error);
       toast.error(error.response?.data?.message || "Failed to  place order.");
@@ -206,9 +205,10 @@ const PlaceOrder = () => {
 
             <button
               onClick={() => handlePlaceOrder()}
-              className="w-full rounded-xl bg-brand-primary py-2 cursor-pointer text-lg font-semibold text-white transition hover:opacity-90"
+              className="w-full rounded-xl bg-brand-primary py-2 cursor-pointer text-lg font-semibold text-white transition hover:opacity-90 disabled:opacity-70"
+              disabled={isPending}
             >
-              Place Order
+              {isPending ? "Ordering..." : "          Place Order"}
             </button>
           </div>
         </div>

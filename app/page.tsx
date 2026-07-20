@@ -7,9 +7,7 @@ import OwnerDashboard from "@/components/dashboard/OwnerDashboard";
 import DeliveryBoyDashboard from "@/components/dashboard/DeliveryBoyDashboard";
 
 export default function Home() {
-  const { token, user } = useAuthStore();
-  console.log(user, "user");
-  console.log(token, "token");
+  const { user } = useAuthStore();
 
   return (
     <ProtectedRoute>

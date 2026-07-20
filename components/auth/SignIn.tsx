@@ -153,7 +153,7 @@ const SignIn: React.FC = () => {
           <button
             type="submit"
             disabled={isPending}
-            className="w-full mt-2 bg-btn-dark hover:bg-btn-dark-hover text-bg-main font-medium py-2.5 px-4 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-border-focus transition duration-150 disabled:opacity-50 text-xs tracking-wide"
+            className="w-full mt-2 cursor-pointer bg-btn-dark hover:bg-btn-dark-hover text-bg-main font-medium py-2.5 px-4 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-border-focus transition duration-150 disabled:opacity-50 text-xs tracking-wide"
           >
             {isPending ? "Verifying Credentials..." : "Sign In"}
           </button>

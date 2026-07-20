@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FaLocationCrosshairs } from "react-icons/fa6";
 import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
 import L from "leaflet";
+import { useLocationStore } from "@/store/useLocationStore";
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
@@ -31,13 +32,13 @@ function ChangeView({ center }: { center: Position }) {
 
 export default function LocationPicker() {
   const [search, setSearch] = useState("");
-  console.log(search, "serch---");
+  const { setLocation } = useLocationStore();
+
   const [position, setPosition] = useState<Position>({
     lat: 23.8103,
     lng: 90.4125,
   });
 
-  console.log("position", position);
   const [loading, setLoading] = useState(false);
 
   const searchLocation = async () => {
@@ -95,6 +96,13 @@ export default function LocationPicker() {
         .join(", ");
 
       setSearch(fullAddress);
+      setLocation(
+        {
+          lat,
+          lng,
+        },
+        fullAddress,
+      );
     } catch (error) {
       console.error(error);
     }

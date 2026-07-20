@@ -8,6 +8,7 @@ import Loading from "@/components/resuable/Loading";
 import { useGetData } from "@/hooks/useGetData";
 import { usePostMutation } from "@/hooks/usePostMutation";
 import { objectToFormData } from "@/lib/objectToFormData";
+import { useAuthStore } from "@/store/authStore";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -57,6 +58,13 @@ const foodTypes = [
 const EditItemPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useRouter();
+
+  const { token, user } = useAuthStore();
+  useEffect(() => {
+    if (!token || !user) {
+      navigate.replace("/signin");
+    }
+  }, [token, user, navigate]);
   const {
     data: item,
     isLoading,

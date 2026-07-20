@@ -5,7 +5,9 @@ import FormInput from "@/components/resuable/form/FormInput";
 import FormSelect from "@/components/resuable/form/FormSelect";
 import { usePostMutation } from "@/hooks/usePostMutation";
 import { objectToFormData } from "@/lib/objectToFormData";
+import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -52,6 +54,12 @@ const foodTypes = [
 
 const AddItemPage = () => {
   const navigate = useRouter();
+  const { token, user } = useAuthStore();
+  useEffect(() => {
+    if (!token || !user) {
+      navigate.replace("/signin");
+    }
+  }, [token, user, navigate]);
   const {
     register,
     control,

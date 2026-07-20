@@ -139,7 +139,7 @@ const Navbar = () => {
                 <span className="hidden sm:flex"> Add Item</span>
               </Link>
               <Link
-                href="/orders"
+                href="/my-order"
                 title="My Orders"
                 className="flex h-12 items-center gap-2 rounded-xl bg-btn-dark px-5 text-sm font-medium text-white shadow-sm transition-all duration-300 hover:bg-btn-dark-hover hover:shadow-md active:scale-95"
               >
@@ -157,7 +157,7 @@ const Navbar = () => {
               {/* Orders */}
               <Link
                 title="My Orders"
-                href="/orders"
+                href="/my-order"
                 className=" h-12 items-center gap-2 rounded-xl bg-btn-dark px-5 font-medium text-btn-light transition-all duration-300 hover:opacity-90 flex text-white"
               >
                 <FiPackage size={18} />

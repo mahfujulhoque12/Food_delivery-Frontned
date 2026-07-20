@@ -1,10 +1,9 @@
 "use client";
-import Cart from "@/components/cart/Cart";
+import MyOrders from "@/components/my-orders/MyOrders";
 import Navbar from "@/components/user-page/Navbar";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
-
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 const page = () => {
   const router = useRouter();
@@ -17,7 +16,7 @@ const page = () => {
   return (
     <div>
       <Navbar />
-      <Cart />
+      <MyOrders />
     </div>
   );
 };

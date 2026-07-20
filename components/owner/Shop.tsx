@@ -81,7 +81,7 @@ const Shop = ({ data }: Props) => {
               </div>
 
               <p className="text-3xl font-bold text-text-dark">
-                {data.items.length}
+                {data?.items?.length}
               </p>
             </div>
 
@@ -92,10 +92,10 @@ const Shop = ({ data }: Props) => {
               </div>
 
               <p className="font-semibold text-text-dark">
-                {data.owner.full_name}
+                {data.owner?.full_name}
               </p>
 
-              <p className="mt-1 text-sm text-gray-500">{data.owner.email}</p>
+              <p className="mt-1 text-sm text-gray-500">{data.owner?.email}</p>
             </div>
 
             <div className="rounded-2xl border border-border-soft bg-bg-main p-6">
@@ -105,7 +105,7 @@ const Shop = ({ data }: Props) => {
               </div>
 
               <p className="text-text-dark">
-                {data.city}, {data.state}
+                {data?.city}, {data.state}
               </p>
 
               <p className="mt-1 text-sm text-gray-500">{data.address}</p>
