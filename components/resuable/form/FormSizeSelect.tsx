@@ -1,9 +1,9 @@
+import { cn } from "@/lib/utils";
 import type {
   FieldValues,
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
-import { cn } from "../../../utils/cn";
 
 interface FormSizeSelectProps<TFormValues extends FieldValues> {
   name: keyof TFormValues; // RHF field name
@@ -47,7 +47,6 @@ const FormSizeSelect = <TFormValues extends FieldValues>({
       newValue = [value];
     }
 
- 
     setValue(name as any, newValue as any, { shouldValidate: true });
   };
 
@@ -66,7 +65,7 @@ const FormSizeSelect = <TFormValues extends FieldValues>({
               onClick={() => handleClick(option)}
               className={cn(
                 " rounded-sm p-2.5 border font-medium text-sm transition-all",
-                isSelected ? selectedClass : unselectedClass
+                isSelected ? selectedClass : unselectedClass,
               )}
             >
               {option.toUpperCase()}

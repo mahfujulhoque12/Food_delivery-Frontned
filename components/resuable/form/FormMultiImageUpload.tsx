@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { cn } from "@/lib/utils";
 import { useRef } from "react";
 import type { FieldError, ControllerRenderProps } from "react-hook-form";
-import { cn } from "../../../utils/cn";
-import { UploadIcon } from "../../icons/Icons";
+import { FaUpload } from "react-icons/fa";
+
 import { IoMdClose } from "react-icons/io";
 
 interface FormMultiImageUploadProps {
@@ -54,7 +55,7 @@ const FormMultiImageUpload = ({
         className="bg-[#F8F9FD] border border-[#DEDEDE] rounded-xl flex flex-col justify-center items-center py-6 gap-1 cursor-pointer hover:bg-[#E3E6F5] transition-colors"
         onClick={handleUploadClick}
       >
-        <UploadIcon />
+        <FaUpload />
         <p className="text-sm font-normal text-[#413E55] flex gap-1 mt-3.5">
           <span className="text-brand underline">Upload</span> {label}
         </p>

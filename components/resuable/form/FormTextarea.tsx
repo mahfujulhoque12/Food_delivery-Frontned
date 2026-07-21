@@ -1,5 +1,5 @@
+import { cn } from "@/lib/utils";
 import type { FieldError, UseFormRegisterReturn } from "react-hook-form";
-import { cn } from "../../../utils/cn";
 
 interface FormTextareaProps {
   label: string;

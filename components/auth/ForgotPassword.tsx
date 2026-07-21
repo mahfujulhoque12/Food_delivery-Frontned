@@ -30,8 +30,9 @@ const ForgotPassword = () => {
 
   const password = watch("password");
 
-  const { mutateAsync, isPending } =
-    usePostMutation<FormData>("/api/auth/sent-otp");
+  const { mutateAsync, isPending } = usePostMutation<FormData>({
+    url: "/api/auth/sent-otp",
+  });
 
   const onEmailSubmit = async (data: FormData) => {
     console.log(data.email);
@@ -54,7 +55,9 @@ const ForgotPassword = () => {
   };
 
   const { mutateAsync: verifyOtp, isPending: isOtpPending } =
-    usePostMutation<FormData>("/api/auth/verify-otp");
+    usePostMutation<FormData>({
+      url: "/api/auth/verify-otp",
+    });
   const onOtpSubmit = async (data: FormData) => {
     try {
       const res = await verifyOtp({
@@ -77,7 +80,9 @@ const ForgotPassword = () => {
     }
   };
   const { mutateAsync: resetPass, isPending: isResetPending } =
-    usePostMutation<FormData>("/api/auth/reset-password");
+    usePostMutation<FormData>({
+      url: "/api/auth/reset-password",
+    });
   const onPasswordSubmit = async (data: FormData) => {
     try {
       const res = await resetPass({

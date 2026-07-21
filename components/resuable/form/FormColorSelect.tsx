@@ -1,5 +1,9 @@
-import type { FieldValues, UseFormSetValue, UseFormWatch } from "react-hook-form";
-import { cn } from "../../../utils/cn";
+import { cn } from "@/lib/utils";
+import type {
+  FieldValues,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
 
 interface FormColorSelectProps<TFormValues extends FieldValues> {
   name: keyof TFormValues;
@@ -44,7 +48,9 @@ const FormColorSelect = <TFormValues extends FieldValues>({
 
   return (
     <div className={className}>
-      {label && <p className="text-sm font-medium text-gray-700 mb-1">{label}</p>}
+      {label && (
+        <p className="text-sm font-medium text-gray-700 mb-1">{label}</p>
+      )}
       <div className="flex flex-wrap gap-3 mt-2">
         {colors.map((color) => {
           const isSelected = selectedValues.includes(color);
@@ -55,7 +61,7 @@ const FormColorSelect = <TFormValues extends FieldValues>({
               onClick={() => handleClick(color)}
               className={cn(
                 "rounded bg-[#E8E8E8] p-2 transition-all flex items-center justify-center",
-                isSelected ? selectedClass : unselectedClass
+                isSelected ? selectedClass : unselectedClass,
               )}
             >
               <span

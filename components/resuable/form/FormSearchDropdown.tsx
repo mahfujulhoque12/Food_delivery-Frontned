@@ -1,4 +1,4 @@
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { FieldError, ControllerRenderProps } from "react-hook-form";
 

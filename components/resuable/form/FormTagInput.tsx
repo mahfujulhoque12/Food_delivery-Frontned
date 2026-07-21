@@ -1,7 +1,7 @@
+import { cn } from "@/lib/utils";
 import { useState, useRef } from "react";
 import type { ControllerRenderProps, FieldError } from "react-hook-form";
 import { IoMdClose } from "react-icons/io";
-import { cn } from "../../../utils/cn";
 
 interface FormTagInputProps {
   field: ControllerRenderProps<any, any>;
