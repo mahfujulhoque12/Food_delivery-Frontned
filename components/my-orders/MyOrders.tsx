@@ -35,7 +35,6 @@ const MyOrders = () => {
     url: "/api/item/get-orders",
     queryKey: ["get-orders"],
   });
-  console.log(orders, "orders");
 
   if (isLoading) return <Loading />;
   if (isError) return <Error onRetry={refetch} />;

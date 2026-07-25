@@ -53,7 +53,7 @@ export interface IShop {
   updatedAt: string;
 }
 
-interface ShopForm {
+export interface ShopForm {
   image: File | null;
   name: string;
   email: string;

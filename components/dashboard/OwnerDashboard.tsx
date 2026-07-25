@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "../user-page/Navbar";
 import OwnerHero from "../owner/OwnerHero";
 

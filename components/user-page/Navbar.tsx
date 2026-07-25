@@ -15,9 +15,15 @@ import {
 import { useAuthStore } from "@/store/authStore";
 import useCurrentCity from "@/hooks/useCurrentCity";
 import { useCartStore } from "@/store/useCartStore";
+import { CurrentOrderResponse } from "@/response/order.res";
+import { useGetData } from "@/hooks/useGetData";
 
 const Navbar = () => {
   const { cart } = useCartStore();
+  const { data } = useGetData<CurrentOrderResponse>({
+    url: "/api/item/get-current-order",
+    queryKey: ["current-order"],
+  });
 
   const { user, logout } = useAuthStore();
   const [showSearch, setShowSearch] = useState(false);
@@ -147,22 +153,32 @@ const Navbar = () => {
 
                 <span className="hidden sm:block">My Orders</span>
 
-                <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-brand-primary px-2 text-xs font-semibold text-white">
-                  01
-                </span>
+                <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-brand-primary px-2 text-xs font-semibold text-white"></span>
               </Link>
             </>
           ) : (
             <>
               {/* Orders */}
-              <Link
-                title="My Orders"
-                href="/my-order"
-                className=" h-12 items-center gap-2 rounded-xl bg-btn-dark px-5 font-medium text-btn-light transition-all duration-300 hover:opacity-90 flex text-white"
-              >
-                <FiPackage size={18} />
-                <span className="hidden sm:flex">My Orders</span>
-              </Link>
+              {user?.role !== "deliveryBoy" && (
+                <Link
+                  title="My Orders"
+                  href="/my-order"
+                  className=" h-12 items-center gap-2 rounded-xl bg-btn-dark px-5 font-medium text-btn-light transition-all duration-300 hover:opacity-90 flex text-white"
+                >
+                  <FiPackage size={18} />
+                  <span className="hidden sm:flex">My Orders</span>
+                </Link>
+              )}
+              {user?.role == "deliveryBoy" && (
+                <Link
+                  title="Accepted Orders"
+                  href="/accept-order"
+                  className=" h-12 items-center gap-2 rounded-xl bg-btn-dark px-5 font-medium text-btn-light transition-all duration-300 hover:opacity-90 flex text-white"
+                >
+                  <FiPackage size={18} />
+                  <span className="hidden sm:flex">Accepted Orders </span>
+                </Link>
+              )}
             </>
           )}
           {/* add item end */}

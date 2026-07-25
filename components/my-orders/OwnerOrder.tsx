@@ -1,27 +1,35 @@
 "use client";
 import { api } from "@/lib/api";
-import { IOrderProps } from "@/response/order.res";
+import { IAvailableBoyFullResponse, IOrderProps } from "@/response/order.res";
 
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
-
+import { useState } from "react";
 
 interface OrderProps {
   orders: IOrderProps[];
 }
 const OwnerOrder = ({ orders }: OrderProps) => {
-const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   console.log(orders, "orders");
+  const [avaiableBoys, setAvaiableBoys] = useState<IAvailableBoyFullResponse>();
+  console.log(avaiableBoys, "avaiableBoys");
   const handleStatusChange = async (
     orderId: string,
     shopId: string,
     status: string,
   ) => {
     try {
-      await api.post(`/api/item/update-status/${orderId}/${shopId}`, {
-        status,
-      });
+      const res = await api.post(
+        `/api/item/update-status/${orderId}/${shopId}`,
+        {
+          status,
+        },
+      );
+      setAvaiableBoys(res.data);
+      console.log(res.data, "res of status");
+
       await queryClient.invalidateQueries({
         queryKey: ["get-orders"],
       });
@@ -81,7 +89,6 @@ const queryClient = useQueryClient();
                       <option value="pending">Pending</option>
                       <option value="preparing">Preparing</option>
                       <option value="out of delivery">Out of Delivery</option>
-                      <option value="delivered">Delivered</option>
                     </select>
                   </div>
                 </div>
@@ -207,6 +214,162 @@ const queryClient = useQueryClient();
               ))}
             </div>
           </div>
+
+          {/* Delivery Management */}
+          {order.shopOrders.map((shopOrder) => {
+            if (shopOrder.status !== "out of delivery") return null;
+
+            return (
+              <div
+                key={shopOrder._id}
+                className="mx-6 mb-6 rounded-3xl border border-border-soft bg-bg-main shadow-sm"
+              >
+                {/* Header */}
+                <div className="flex flex-col gap-4 border-b border-border-soft p-6 md:flex-row md:items-center md:justify-between">
+                  <div>
+                    <h2 className="text-2xl font-bold text-text-dark">
+                      🚚 Delivery Management
+                    </h2>
+
+                    <p className="mt-1 text-sm text-text-light">
+                      Assign a delivery partner for{" "}
+                      <span className="font-semibold text-brand-primary">
+                        {shopOrder.shop.name}
+                      </span>
+                    </p>
+                  </div>
+
+                  <div className="rounded-full bg-brand-primary px-5 py-2 text-sm font-semibold text-white">
+                    {avaiableBoys?.avaiableBoys?.length ?? 0} Available
+                  </div>
+                </div>
+
+                <div className="p-6">
+                  {avaiableBoys?.avaiableBoys?.length ? (
+                    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                      {avaiableBoys.avaiableBoys.map((boy) => (
+                        <div
+                          key={boy.id}
+                          className="group rounded-3xl border border-border-soft bg-bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-brand-primary hover:shadow-xl"
+                        >
+                          {/* Avatar */}
+                          <div className="mb-5 flex justify-center">
+                            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-brand-primary text-3xl font-bold text-white">
+                              {boy.full_name.charAt(0).toUpperCase()}
+                            </div>
+                          </div>
+
+                          {/* Name */}
+                          <div className="text-center">
+                            <h3 className="text-xl font-bold text-text-dark">
+                              {boy.full_name}
+                            </h3>
+
+                            <p className="mt-2 text-text-light">
+                              📞 {boy.mobile}
+                            </p>
+                          </div>
+
+                          {/* Status */}
+                          <div className="mt-6 flex items-center justify-center gap-2">
+                            <span className="h-3 w-3 rounded-full bg-green-500"></span>
+
+                            <span className="text-sm font-medium text-green-600">
+                              Available Now
+                            </span>
+                          </div>
+
+                          {/* Location */}
+                          <div className="mt-5 rounded-2xl bg-bg-main p-3 text-center">
+                            <p className="text-xs text-text-light">
+                              Current Location
+                            </p>
+
+                            <p className="mt-1 text-sm font-medium text-text-dark">
+                              📍 {boy.latitude.toFixed(4)},{" "}
+                              {boy.longitude.toFixed(4)}
+                            </p>
+                          </div>
+
+                          {/* Button */}
+                          <button
+                            className="mt-6 w-full rounded-2xl bg-brand-primary py-3 font-semibold text-white transition-all hover:scale-[1.02] hover:opacity-90"
+                            onClick={() =>
+                              console.log("Assign", boy.id, shopOrder._id)
+                            }
+                          >
+                            Assign Delivery Partner
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <>
+                      {shopOrder?.assignDeliveryBoy ? (
+                        <div className="flex flex-col items-center justify-center rounded-3xl border border-border-soft bg-bg-card px-6 py-16 text-center">
+                          <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-brand-primary text-5xl text-white">
+                            🚴
+                          </div>
+
+                          <h2 className="text-2xl font-bold text-text-dark">
+                            Delivery Partner Assigned
+                          </h2>
+
+                          <p className="mt-4 text-text-light">
+                            <span className="font-semibold">Name:</span>{" "}
+                            {shopOrder.assignDeliveryBoy.full_name}
+                          </p>
+
+                          <p className="mt-2 text-text-light">
+                            <span className="font-semibold">Phone:</span>{" "}
+                            {shopOrder.assignDeliveryBoy.mobile}
+                          </p>
+
+                          <button
+                            onClick={() =>
+                              window.open(
+                                `tel:${shopOrder.assignDeliveryBoy.mobile}`,
+                              )
+                            }
+                            className="mt-8 rounded-2xl bg-brand-primary cursor-pointer px-6 py-3 font-semibold text-white transition hover:opacity-90"
+                          >
+                            📞 Call Delivery Partner
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-center justify-center rounded-3xl border border-dashed border-border-soft bg-bg-card px-6 py-16 text-center">
+                          <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-bg-main text-5xl">
+                            🛵
+                          </div>
+
+                          <h2 className="text-2xl font-bold text-text-dark">
+                            Waiting for a Delivery Partner
+                          </h2>
+
+                          <p className="mt-4 max-w-lg text-text-light">
+                            There are currently no delivery partners available
+                            for this order. Once someone becomes available, you
+                            can assign them with a single click.
+                          </p>
+
+                          <button
+                            className="mt-8 cursor-pointer rounded-2xl border border-border-soft bg-bg-main px-6 py-3 font-semibold text-text-dark transition hover:border-brand-primary"
+                            onClick={() =>
+                              queryClient.invalidateQueries({
+                                queryKey: ["get-orders"],
+                              })
+                            }
+                          >
+                            Refresh Availability
+                          </button>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       ))}
     </div>

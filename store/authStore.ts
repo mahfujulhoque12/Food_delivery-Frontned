@@ -1,14 +1,14 @@
-import { SignInFormInput } from "@/response/auth.res";
+import { IUserRes, SignInFormInput } from "@/response/auth.res";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface AuthState {
-  user: SignInFormInput | null;
+  user: IUserRes | null;
   token: string | null;
   hydrated: boolean;
 
   setHydrated: (state: boolean) => void;
-  setAuth: (user: SignInFormInput, token: string) => void;
+  setAuth: (user: IUserRes, token: string) => void;
   logout: () => void;
 }
 
