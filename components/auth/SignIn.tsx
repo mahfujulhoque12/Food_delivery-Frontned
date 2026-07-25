@@ -18,7 +18,6 @@ const SignIn: React.FC = () => {
   const {
     register,
     handleSubmit,
-
     formState: { errors },
     reset,
   } = useForm<SignInFormInput>({
