@@ -12,7 +12,6 @@ const DeliveryBoyDashboard = () => {
   }, []);
   return (
     <div>
-      <Navbar />
       <DeliveryBoyMain />
     </div>
   );

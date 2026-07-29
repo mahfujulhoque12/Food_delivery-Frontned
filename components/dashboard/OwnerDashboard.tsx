@@ -1,10 +1,8 @@
-import Navbar from "../user-page/Navbar";
 import OwnerHero from "../owner/OwnerHero";
 
 const OwnerDashboard = () => {
   return (
     <div>
-      <Navbar />
       <OwnerHero />
     </div>
   );

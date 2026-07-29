@@ -67,6 +67,14 @@ export interface IRating {
   count: number;
 }
 
+export interface Coordinates {}
+export interface LocationProps {
+  location: {
+    type: "Point";
+    coordinates: [number, number]; // [lng, lat]
+  };
+}
+
 export interface IUser {
   _id: string;
   full_name: string;
@@ -77,6 +85,7 @@ export interface IUser {
   password: string;
   createdAt: string;
   updatedAt: string;
+  location: LocationProps;
   __v: number;
 }
 export interface IShopOrder {
@@ -145,4 +154,16 @@ export interface CurrentOrderResponse {
   deliveryAddress: IDeliveryAddress;
   shopOrder: IShopOrder;
   user: IUser;
+  _id: string;
+}
+
+export interface TrackOrderProps {
+  deliveryAddress: IDeliveryAddress;
+  paymentMethod: string;
+  shopOrders: IShopOrder[];
+  totalAmount: number;
+  user: IUser;
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
 }

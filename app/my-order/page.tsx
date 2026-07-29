@@ -1,6 +1,5 @@
 "use client";
 import MyOrders from "@/components/my-orders/MyOrders";
-import Navbar from "@/components/user-page/Navbar";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -15,7 +14,7 @@ const page = () => {
   }, [token, user, router]);
   return (
     <div>
-      <Navbar />
+
       <MyOrders />
     </div>
   );

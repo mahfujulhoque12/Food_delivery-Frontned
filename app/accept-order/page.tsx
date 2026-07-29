@@ -4,7 +4,7 @@ import Navbar from "@/components/user-page/Navbar";
 const page = () => {
   return (
     <div>
-      <Navbar />
+   
       <CurrentOrder />
     </div>
   );

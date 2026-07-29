@@ -1,6 +1,6 @@
 "use client";
 import Cart from "@/components/cart/Cart";
-import Navbar from "@/components/user-page/Navbar";
+
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 
@@ -16,7 +16,6 @@ const page = () => {
   }, [token, user, router]);
   return (
     <div>
-      <Navbar />
       <Cart />
     </div>
   );

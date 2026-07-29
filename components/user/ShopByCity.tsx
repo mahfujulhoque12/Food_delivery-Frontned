@@ -5,7 +5,6 @@ import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import useCurrentCity from "@/hooks/useCurrentCity";
-import { useGetData } from "@/hooks/useGetData";
 import Loading from "../resuable/Loading";
 import Error from "../resuable/Error";
 import { IShop, IFoodItem } from "@/response/shop.res";
@@ -14,35 +13,37 @@ import { BiMapPin, BiMinus, BiPlus } from "react-icons/bi";
 import { CgShoppingBag } from "react-icons/cg";
 import { MdOutlineStarPurple500 } from "react-icons/md";
 import { useCartStore } from "@/store/useCartStore";
+import Link from "next/link";
 
 interface ShopByCityRes {
   shops: IShop[];
+  selectedCategory: string;
 }
 
-const ShopByCity = () => {
-  const { addToCart, increment, decrement, getQuantity } = useCartStore();
-  const { city, loading } = useCurrentCity();
+const ShopByCity = ({ shops, selectedCategory }: ShopByCityRes) => {
   const [selectedShop, setSelectedShop] = useState<IShop | null>(null);
 
-  const { data, isLoading, isError, refetch } = useGetData<ShopByCityRes>({
-    url: `/api/shop/get-shopByCity/${city}`,
-    queryKey: ["city", city],
-    options: {
-      enabled: !loading && city !== "Unknown",
-    },
-  });
+  const filteredItems =
+    selectedCategory === "All"
+      ? (selectedShop?.items ?? [])
+      : (selectedShop?.items ?? []).filter(
+          (item) =>
+            item.category.toLowerCase() === selectedCategory.toLowerCase(),
+        );
+  const { addToCart, increment, decrement, getQuantity } = useCartStore();
+  const { city, loading } = useCurrentCity();
 
   // ডাটা লোড হওয়ার পর ডিফল্টভাবে প্রথম শপটি সিলেক্ট করে রাখা
   useEffect(() => {
-    if (data?.shops && data.shops.length > 0) {
-      setSelectedShop(data.shops[0]);
+    if (shops && shops.length > 0) {
+      setSelectedShop(shops[0]);
     }
-  }, [data]);
+  }, [shops]);
 
   const [emblaRef] = useEmblaCarousel(
     {
       align: "start",
-      loop: data?.shops && data.shops.length > 5,
+      loop: shops && shops.length > 5,
       dragFree: true,
     },
     [
@@ -53,9 +54,6 @@ const ShopByCity = () => {
       }),
     ],
   );
-
-  if (isLoading) return <Loading />;
-  if (isError) return <Error onRetry={refetch} />;
 
   return (
     <section className="bg-bg-main min-h-screen py-12 transition-colors duration-300">
@@ -83,10 +81,11 @@ const ShopByCity = () => {
         {/* --- Shops Carousel --- */}
         <div className="overflow-hidden py-4 -mx-4 px-4" ref={emblaRef}>
           <div className="flex gap-5">
-            {data?.shops?.map((shop) => {
+            {shops?.map((shop) => {
               const isSelected = selectedShop?._id === shop._id;
               return (
-                <div
+                <Link
+                  href={`/shop/${shop._id}`}
                   key={shop._id}
                   onClick={() => setSelectedShop(shop)}
                   className="min-w-0 flex-[0_0_70%] sm:flex-[0_0_40%] md:flex-[0_0_30%] lg:flex-[0_0_22%] xl:flex-[0_0_18%] cursor-pointer select-none"
@@ -119,7 +118,7 @@ const ShopByCity = () => {
                       <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-brand-primary animate-ping" />
                     )}
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>
@@ -142,11 +141,11 @@ const ShopByCity = () => {
                 </p>
               </div>
               <span className="para-2">
-                Total {selectedShop.items?.length || 0} Items
+                Total {filteredItems.length || 0} Items
               </span>
             </div>
 
-            {selectedShop.items?.length === 0 ? (
+            {filteredItems?.length === 0 ? (
               <div className="text-center py-16 bg-bg-card rounded-2xl border border-border-soft">
                 <p className="text-text-muted font-medium">
                   No menu items found for this restaurant.
@@ -154,7 +153,7 @@ const ShopByCity = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                {selectedShop.items?.map((item: IFoodItem) => {
+                {filteredItems?.map((item: IFoodItem) => {
                   const quantity = getQuantity(item._id);
 
                   return (
@@ -193,7 +192,7 @@ const ShopByCity = () => {
 
                         {/* Title */}
                         <h4 className="font-bold text-text-dark text-base tracking-tight line-clamp-1 group-hover:text-brand-primary transition-colors">
-                          {item.name}
+                          {item.name}dfg
                         </h4>
                       </div>
 

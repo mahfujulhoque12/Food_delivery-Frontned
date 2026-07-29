@@ -27,12 +27,9 @@ function MapRecenter({ center }: { center: [number, number] }) {
   return null;
 }
 
-export default function DeliveryTrackingMap({ customer, deliveryBoy }: Props) {
+export default function OrderTrackingMapUser({ customer, deliveryBoy }: Props) {
   // 1. Force a strict client-mounted checklist check
   const [isMounted, setIsMounted] = useState(false);
-
-  console.log(customer, "customer");
-  console.log(deliveryBoy, "deliveryBoy");
 
   useEffect(() => {
     setIsMounted(true);
@@ -68,7 +65,13 @@ export default function DeliveryTrackingMap({ customer, deliveryBoy }: Props) {
     ],
     [customer.lat, customer.lon, deliveryBoy.lat, deliveryBoy.lon],
   );
-
+  console.log(
+    {
+      customer,
+      deliveryBoy,
+    },
+    "ttttttt",
+  );
   // Keep the container initialization target absolutely frozen
   const initialCenter = useMemo<[number, number]>(() => currentCenter, []);
 

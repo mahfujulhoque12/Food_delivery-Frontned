@@ -1,7 +1,9 @@
 import { IOrderProps } from "@/response/order.res";
+import Link from "next/link";
 import React from "react";
 import {
   FaCalendarAlt,
+  FaMapMarkedAlt,
   FaMapMarkerAlt,
   FaMoneyBillWave,
   FaReceipt,
@@ -83,6 +85,13 @@ const UserOrder = ({ orders }: OrderProps) => {
                   </p>
                 </div>
               </div>
+              <Link
+                href={`/track-order/${order._id}`}
+                className="inline-flex items-center gap-2 rounded-xl bg-btn-dark px-5 py-3 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:scale-105 hover:opacity-90 active:scale-95"
+              >
+                <FaMapMarkedAlt className="text-base" />
+                <span>Track Order</span>
+              </Link>
             </div>
 
             {/* Shops */}
