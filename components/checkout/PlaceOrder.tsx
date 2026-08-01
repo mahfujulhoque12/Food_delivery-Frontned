@@ -7,6 +7,8 @@ import { usePostMutation } from "@/hooks/usePostMutation";
 import { toast } from "sonner";
 import { useLocationStore } from "@/store/useLocationStore";
 import { useRouter } from "next/navigation";
+import { loadStripe } from "@stripe/stripe-js";
+import { api } from "@/lib/api";
 
 const PlaceOrder = () => {
   const position = useLocationStore((state) => state.position);
@@ -22,6 +24,7 @@ const PlaceOrder = () => {
     0,
   );
 
+  console.log(cart, "Cart");
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   const deliveryFee = subtotal > 0 ? 3 : 0;
@@ -34,7 +37,47 @@ const PlaceOrder = () => {
     invalidateQuery: ["get-orders"],
   });
 
+  const makeStripePayment = async () => {
+    try {
+      const stripe = await loadStripe(
+        "pk_test_51M6TX6BQL91cPKd3hWen4AXUY7Rul5lsVfzsTdiBCy6MnJEr8lcKlxL4keXMiZ9TM8gjPQKUQU39AFf8JYpGHg1M00y6pV0ggu",
+      );
+
+      const { data } = await api.post("/api/stripe/create-checkout-session", {
+        cart,
+        totalAmount,
+      });
+      console.log(data, "Data of stripe");
+
+      if (!stripe) {
+        throw new Error("Stripe failed to initialize");
+      }
+
+      // ২. ব্যাকএন্ড থেকে আসা সরাসরি স্ট্রাইপ ইউআরএল-এ রিডাইরেক্ট করুন
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        toast.error("Stripe URL not found in server response.");
+      }
+    } catch (error) {
+      console.error("Error creating checkout session:", error);
+    }
+  };
+
+  // মেইন প্লেস অর্ডার বাটন হ্যান্ডলার
   const handlePlaceOrder = async () => {
+    if (cart.length === 0) {
+      toast.error("Your cart is empty");
+      return;
+    }
+
+    // ১. অনলাইন পেমেন্ট সিলেক্ট করা থাকলে আগে স্ট্রাইপ ওপেন হবে
+    if (paymentMethod === "online") {
+      await makeStripePayment();
+      return; // এখানেই কোড স্টপ হবে, বাকি কাজ স্ট্রাইপ ওয়েবপেইজে হবে
+    }
+
+    // ২. ক্যাশ অন ডেলিভারি (COD) হলে সরাসরি অর্ডার সাবমিট হবে
     try {
       const payload = {
         paymentMethod,
@@ -60,7 +103,7 @@ const PlaceOrder = () => {
       router.push("/placed-order");
     } catch (error: any) {
       console.log(error);
-      toast.error(error.response?.data?.message || "Failed to  place order.");
+      toast.error(error.response?.data?.message || "Failed to place order.");
     }
   };
 
@@ -129,7 +172,10 @@ const PlaceOrder = () => {
                     <FaCreditCard size={22} />
                   </div>
 
-                  <div className="text-left">
+                  <button
+                    className="text-left"
+                    onClick={() => makeStripePayment()}
+                  >
                     <h3 className="text-lg font-semibold text-text-dark">
                       Online Payment
                     </h3>
@@ -137,7 +183,7 @@ const PlaceOrder = () => {
                     <p className="mt-1 text-sm text-text-light">
                       bKash, Nagad, Visa & Mastercard
                     </p>
-                  </div>
+                  </button>
                 </div>
 
                 <div
