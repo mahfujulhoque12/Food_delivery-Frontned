@@ -192,7 +192,7 @@ const ShopByCity = ({ shops, selectedCategory }: ShopByCityRes) => {
 
                         {/* Title */}
                         <h4 className="font-bold text-text-dark text-base tracking-tight line-clamp-1 group-hover:text-brand-primary transition-colors">
-                          {item.name}dfg
+                          {item.name}
                         </h4>
                       </div>
 
