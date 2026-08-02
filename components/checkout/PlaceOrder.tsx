@@ -53,7 +53,7 @@ const PlaceOrder = () => {
         throw new Error("Stripe failed to initialize");
       }
 
-      // ২. ব্যাকএন্ড থেকে আসা সরাসরি স্ট্রাইপ ইউআরএল-এ রিডাইরেক্ট করুন
+      //redriect to stripe checkout page
       if (data.url) {
         window.location.href = data.url;
       } else {
@@ -64,20 +64,20 @@ const PlaceOrder = () => {
     }
   };
 
-  // মেইন প্লেস অর্ডার বাটন হ্যান্ডলার
+  // main place order btn handler
   const handlePlaceOrder = async () => {
     if (cart.length === 0) {
       toast.error("Your cart is empty");
       return;
     }
 
-    // ১. অনলাইন পেমেন্ট সিলেক্ট করা থাকলে আগে স্ট্রাইপ ওপেন হবে
+    // if select online payment
     if (paymentMethod === "online") {
       await makeStripePayment();
-      return; // এখানেই কোড স্টপ হবে, বাকি কাজ স্ট্রাইপ ওয়েবপেইজে হবে
+      return;
     }
 
-    // ২. ক্যাশ অন ডেলিভারি (COD) হলে সরাসরি অর্ডার সাবমিট হবে
+    // if select cod delivery
     try {
       const payload = {
         paymentMethod,
