@@ -27,8 +27,6 @@ const Category = () => {
     },
   });
 
-  console.log(data, "ciyi data");
-
   const filteredShops =
     selectedCategory === "All"
       ? (data?.shops ?? [])
@@ -81,6 +79,17 @@ const Category = () => {
         </div>
 
         <div className="overflow-hidden py-2" ref={emblaRef}>
+          <button
+            onClick={() => setSelectedCategory("All")}
+            className={`mb-4 rounded-full px-5 py-2 transition cursor-pointer ${
+              selectedCategory === "All"
+                ? "bg-bg-card border border-border-soft hover:border-brand-primary"
+                : " bg-brand-primary text-white"
+            }`}
+          >
+            All Items
+          </button>
+
           <div className="-ml-4 flex">
             {categories.map((category) => (
               <div
