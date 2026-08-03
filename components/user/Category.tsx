@@ -54,7 +54,7 @@ const Category = () => {
     ],
   );
 
-  if (isLoading) return <Loading />;
+  if (isLoading || loading) return <Loading />;
   if (isError) return <Error onRetry={refetch} />;
   return (
     <>
