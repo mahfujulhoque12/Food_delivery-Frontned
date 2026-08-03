@@ -16,6 +16,7 @@ import Error from "../resuable/Error";
 interface ShopByCityRes {
   shops: IShop[];
 }
+
 const Category = () => {
   const { city, loading } = useCurrentCity();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -57,7 +58,7 @@ const Category = () => {
   return (
     <>
       <section className="wrapper mt-16">
-        <div className="mb-8 flex items-end justify-between">
+        <div className="mb-4 flex items-end justify-between">
           <div>
             <span className="title">⚡ Categories</span>
 
