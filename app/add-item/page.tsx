@@ -157,6 +157,9 @@ const AddItemPage = () => {
                 label="Average Rating"
                 type="number"
                 placeholder="4.8"
+                  step={0.1}
+  min={0}
+  max={5}
                 register={register("rating.average", {
                   required: "Average rating is required",
                   valueAsNumber: true,

@@ -191,6 +191,9 @@ const EditItemPage = () => {
               <FormInput
                 label="Average Rating"
                 type="number"
+                  step={0.1}
+  min={0}
+  max={5}
                 placeholder="4.8"
                 register={register("rating.average", {
                   required: "Average rating is required",

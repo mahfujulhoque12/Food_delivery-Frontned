@@ -12,8 +12,10 @@ interface FormInputProps {
   className?: string;
   value?: string | number;
   readOnly?: boolean;
+  step?: number | string;
+  min?: number;
+  max?: number;
 }
-
 const FormInput = ({
   label,
   placeholder,
@@ -23,6 +25,9 @@ const FormInput = ({
   value,
   className,
   readOnly = false,
+  step,
+  min,
+  max,
 }: FormInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -38,17 +43,19 @@ const FormInput = ({
       <div className="relative mt-1.5">
         <input
           type={inputType}
+          step={step}
+          min={min}
+          max={max}
           {...register}
           placeholder={placeholder}
           value={value}
           readOnly={readOnly}
           className={cn(
             `w-full rounded-xl border bg-[#F8F9FD] px-3.5 py-2.5 pr-12 focus:outline-none
-            ${error ? "border-red-500" : "border-[#CDCDCD66]"}`,
+    ${error ? "border-red-500" : "border-[#CDCDCD66]"}`,
             className,
           )}
         />
-
         {type === "password" && (
           <button
             type="button"
