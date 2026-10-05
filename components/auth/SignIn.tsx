@@ -51,7 +51,7 @@ const SignIn: React.FC = () => {
 
   return (
     /* Strict viewport wrapping prevents any browser window scrolling */
-    <div className="h-screen w-screen bg-bg-main flex items-center justify-center p-4 overflow-hidden antialiased font-sans selection:bg-brand-light">
+    <div className="h-screen  bg-bg-main flex items-center justify-center p-4 overflow-hidden antialiased font-sans selection:bg-brand-light">
       <div className="w-full max-w-md bg-bg-card rounded-2xl shadow-[0_4px_25px_rgba(0,0,0,0.02)] border border-border-soft p-6 space-y-5">
         {/* Soft Minimalist Branding Header */}
         <div className="text-center space-y-1">

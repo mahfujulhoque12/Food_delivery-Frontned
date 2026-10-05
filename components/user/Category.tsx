@@ -21,11 +21,8 @@ const Category = () => {
   const { city, loading } = useCurrentCity();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const { data, isLoading, isError, refetch } = useGetData<ShopByCityRes>({
-    url: `/api/shop/get-shopByCity/${city}`,
-    queryKey: ["city", city],
-    options: {
-      enabled: !loading && city !== "Unknown",
-    },
+    url: "/api/shop/get-all-shops",
+    queryKey: ["all-shops"],
   });
 
   const filteredShops =
@@ -64,11 +61,9 @@ const Category = () => {
 
             <h2 className="mt-4 head-1">Browse by Category</h2>
             <div className="mt-2 para-3">
-              <BiMapPin className="w-4 h-4 text-brand-primary animate-pulse" />
+              <BiMapPin className="w-4 h-4 text-brand-primary" />
               <span className="font-medium text-sm md:text-base">
-                {loading
-                  ? "Locating you..."
-                  : `Top Rated Categories in ${city}`}
+                Explore All Available Shops
               </span>
             </div>
 

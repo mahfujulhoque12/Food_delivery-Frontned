@@ -74,7 +74,7 @@ const SignUp: React.FC = () => {
 
   return (
     /* Configured with your global CSS theme tokens */
-    <div className="h-screen w-screen bg-bg-main flex items-center justify-center p-4 overflow-hidden antialiased font-sans selection:bg-brand-light">
+    <div className="h-screen bg-bg-main flex items-center justify-center p-4 overflow-hidden antialiased font-sans selection:bg-brand-light">
       <div className="w-full max-w-lg bg-bg-card rounded-2xl shadow-[0_4px_25px_rgba(0,0,0,0.02)] border border-border-soft p-6 space-y-5">
         {/* Soft Minimalist Branding Header */}
         <div className="text-center space-y-1">
@@ -109,7 +109,7 @@ const SignUp: React.FC = () => {
                     key={item.id}
                     type="button"
                     onClick={() => setValue("role", item.id as UserRole)}
-                    className={`flex flex-col items-center justify-center py-2 px-3 rounded-xl border text-center transition-all group ${
+                    className={`flex cursor-pointer flex-col items-center justify-center py-2 px-3 rounded-xl border text-center transition-all group ${
                       isSelected
                         ? "border-brand-primary/30 bg-brand-light text-brand-primary shadow-sm"
                         : "border-border-soft hover:border-stone-200 bg-bg-card text-text-muted hover:text-text-dark"

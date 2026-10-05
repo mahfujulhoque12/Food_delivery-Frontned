@@ -158,7 +158,7 @@ const PlaceOrder = () => {
             </button>
 
             {/* Online Payment */}
-            <button
+            {/* <button
               onClick={() => setPaymentMethod("online")}
               className={`w-full cursor-pointer rounded-2xl border p-5 transition-all duration-200 ${
                 paymentMethod === "online"
@@ -181,7 +181,7 @@ const PlaceOrder = () => {
                     </h3>
 
                     <p className="mt-1 text-sm text-text-light">
-                      bKash, Nagad, Visa & Mastercard
+                      Stripe Payment
                     </p>
                   </button>
                 </div>
@@ -198,7 +198,7 @@ const PlaceOrder = () => {
                   )}
                 </div>
               </div>
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

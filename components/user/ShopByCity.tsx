@@ -31,7 +31,6 @@ const ShopByCity = ({ shops, selectedCategory }: ShopByCityRes) => {
             item.category.toLowerCase() === selectedCategory.toLowerCase(),
         );
   const { addToCart, increment, decrement, getQuantity } = useCartStore();
-  const { city, loading } = useCurrentCity();
 
   // ডাটা লোড হওয়ার পর ডিফল্টভাবে প্রথম শপটি সিলেক্ট করে রাখা
   useEffect(() => {
@@ -66,9 +65,9 @@ const ShopByCity = ({ shops, selectedCategory }: ShopByCityRes) => {
             </span>
             <h2 className="mt-4 head-1">Browse by City</h2>
             <div className="mt-2 para-3">
-              <BiMapPin className="w-4 h-4 text-brand-primary animate-pulse" />
+              <BiMapPin className="w-4 h-4 text-brand-primary" />
               <span className="font-medium text-sm md:text-base">
-                {loading ? "Locating you..." : `Top Rated Vendors in ${city}`}
+                Explore Top Rated Vendors
               </span>
             </div>
           </div>
